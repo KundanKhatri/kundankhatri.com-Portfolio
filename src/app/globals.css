@@ -1,0 +1,92 @@
+:root {
+  --bg: #050508;
+  --bg-2: #0a0a12;
+  --fg: #f2f4f8;
+  --muted: #9aa3b2;
+  --accent: #00e5ff;
+  --accent-dim: rgba(0, 229, 255, 0.12);
+  --gold: #d4af37;
+  --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: initial; } /* Lenis owns scrolling */
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection { background: var(--accent); color: #000; }
+
+.canvas-root {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Backdrop shown when WebGL is unavailable / reduced-motion / Save-Data.
+   Atmospheric, on-brand — never a blank screen. */
+.canvas-static {
+  background:
+    radial-gradient(60% 50% at 72% 28%, rgba(0, 229, 255, 0.14), transparent 60%),
+    radial-gradient(50% 42% at 26% 82%, rgba(48, 64, 255, 0.10), transparent 62%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 64px),
+    var(--bg);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(4rem, 10vh, 8rem) clamp(1.25rem, 6vw, 6rem);
+  max-width: 1200px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+h1, h2, h3 { font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; }
+h1 { font-size: clamp(2.4rem, 7vw, 5.5rem); line-height: 1.02; }
+h2 { font-size: clamp(1.8rem, 4.5vw, 3.2rem); line-height: 1.1; }
+p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 46ch; margin-top: 1.5rem; line-height: 1.6; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.04);
+  color: var(--fg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .25s cubic-bezier(.2,.8,.2,1), background .25s, border-color .25s, box-shadow .25s;
+}
+.btn:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 8px 40px -12px var(--accent); }
+.btn.primary { background: var(--accent); color: #001014; border-color: transparent; }
+.btn.primary:hover { box-shadow: 0 8px 48px -8px var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

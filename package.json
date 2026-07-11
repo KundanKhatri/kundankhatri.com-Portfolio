@@ -1,0 +1,35 @@
+{
+  "name": "kundankhatri-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.1.0",
+    "gsap": "^3.12.7",
+    "howler": "^2.2.4",
+    "lenis": "^1.2.3",
+    "next": "^15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.175.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@gltf-transform/core": "^4.4.1",
+    "@gltf-transform/extensions": "^4.4.1",
+    "@gltf-transform/functions": "^4.4.1",
+    "@types/howler": "^2.2.12",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/three": "^0.175.0",
+    "draco3dgltf": "^1.5.7",
+    "typescript": "^5.8.0"
+  }
+}
