@@ -6,11 +6,11 @@
 // for three.js Draco decoding.
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
+  "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://www.gstatic.com",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  "connect-src 'self' blob: data:",
+  "connect-src 'self' blob: data: https://www.gstatic.com",
   "worker-src 'self' blob:",
   "frame-src 'none'",
   "object-src 'none'",

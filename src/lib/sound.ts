@@ -1,9 +1,11 @@
 'use client';
 import { Howl } from 'howler';
 
-/** Central sound manager — muted by default, user opts in. */
+/** Central sound manager. On by default; browsers keep the audio context locked
+ *  until the first user gesture, so nothing plays on load — sounds fire from the
+ *  first click/hover onward. The toggle acts as a mute. */
 class SoundManager {
-  private enabled = false;
+  private enabled = true;
   private sounds: Record<string, Howl> = {};
 
   init() {
@@ -25,6 +27,7 @@ class SoundManager {
 
   play(name: 'click' | 'hover' | 'whoosh' | 'boot') {
     if (!this.enabled) return;
+    if (!Object.keys(this.sounds).length) this.init(); // lazy-init on first gesture
     this.sounds[name]?.play();
   }
 }

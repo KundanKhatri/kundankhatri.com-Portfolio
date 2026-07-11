@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { sound } from '@/lib/sound';
 
 export function SoundToggle() {
-  const [on, setOn] = useState(false);
+  const [on, setOn] = useState(true);
   return (
     <button
       className="btn"
