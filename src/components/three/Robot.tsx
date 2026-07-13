@@ -77,6 +77,41 @@ export function Robot() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- boot runs exactly once when actions resolve
   }, [actions, hasBooted]);
 
+  // While Digital Kundan is talking (TTS active), play the Wave clip on loop and remember the
+  // previously running clip so we can restore it when speech ends.
+  const prevLoop = useRef<string | null>(null);
+  useEffect(() => {
+    const onSpeak = (e: Event) => {
+      const speaking = (e as CustomEvent<boolean>).detail;
+      if (speaking) {
+        if (current.current && current.current !== 'Wave' && current.current !== 'BigWave') {
+          prevLoop.current = current.current;
+        }
+        const wave = actions['Wave'];
+        const big = actions['BigWave'];
+        const target = big ?? wave;
+        if (!target) return;
+        // Loop Wave during long replies so it never looks frozen.
+        const prev = current.current ? actions[current.current] : null;
+        target.reset().setLoop(THREE.LoopRepeat, Infinity).fadeIn(0.25).play();
+        prev?.fadeOut(0.25);
+        current.current = target === big ? 'BigWave' : 'Wave';
+      } else if (prevLoop.current) {
+        // Speech ended — restore the section loop.
+        const restore = actions[prevLoop.current];
+        if (restore) {
+          const prev = current.current ? actions[current.current] : null;
+          restore.reset().setLoop(THREE.LoopRepeat, Infinity).fadeIn(0.4).play();
+          prev?.fadeOut(0.4);
+          current.current = prevLoop.current;
+          prevLoop.current = null;
+        }
+      }
+    };
+    window.addEventListener('kk-speaking', onSpeak);
+    return () => window.removeEventListener('kk-speaking', onSpeak);
+  }, [actions]);
+
   useFrame(() => {
     if (!group.current) return;
     const p = scrollState.progress;

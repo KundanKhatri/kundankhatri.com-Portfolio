@@ -1,12 +1,15 @@
 :root {
-  --bg: #050508;
-  --bg-2: #0a0a12;
-  --fg: #f2f4f8;
-  --muted: #9aa3b2;
-  --accent: #00e5ff;
-  --accent-dim: rgba(0, 229, 255, 0.12);
+  /* Dark-luxury palette: near-black canvas, warm cream foreground, gold accent. */
+  --bg: #0a0a0c;
+  --bg-2: #121214;
+  --fg: #f3efe6;
+  --muted: #8a8579;
+  --accent: #d4af37;
+  --accent-warm: #f2e6c2;
+  --accent-dim: rgba(212, 175, 55, 0.12);
   --gold: #d4af37;
   --font-sans: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-serif), 'Cormorant Garamond', Georgia, serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,10 +37,10 @@ html, body {
    Atmospheric, on-brand — never a blank screen. */
 .canvas-static {
   background:
-    radial-gradient(60% 50% at 72% 28%, rgba(0, 229, 255, 0.14), transparent 60%),
-    radial-gradient(50% 42% at 26% 82%, rgba(48, 64, 255, 0.10), transparent 62%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 64px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 64px),
+    radial-gradient(60% 50% at 72% 28%, rgba(212, 175, 55, 0.10), transparent 60%),
+    radial-gradient(50% 42% at 26% 82%, rgba(242, 230, 194, 0.05), transparent 62%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 64px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 64px),
     var(--bg);
 }
 
@@ -46,27 +49,32 @@ html, body {
   z-index: 1;
 }
 
+/* Dark-luxury layout: generous white space, narrow content column, centered. */
 .section {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(4rem, 10vh, 8rem) clamp(1.25rem, 6vw, 6rem);
-  max-width: 1200px;
+  padding: clamp(8rem, 18vh, 14rem) clamp(1.5rem, 8vw, 8rem);
+  max-width: 920px;
+  margin: 0 auto;
 }
 
 .eyebrow {
   color: var(--accent);
-  font-size: 0.8rem;
-  letter-spacing: 0.25em;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
-  margin-bottom: 1rem;
+  margin-bottom: 1.6rem;
+  font-weight: 500;
 }
 
-h1, h2, h3 { font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; }
-h1 { font-size: clamp(2.4rem, 7vw, 5.5rem); line-height: 1.02; }
-h2 { font-size: clamp(1.8rem, 4.5vw, 3.2rem); line-height: 1.1; }
-p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 46ch; margin-top: 1.5rem; line-height: 1.6; }
+/* Display headlines use the luxury serif. H1 is the marquee statement. */
+h1, h2 { font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.01em; text-wrap: balance; color: var(--fg); }
+h1 { font-size: clamp(3rem, 9vw, 7rem); line-height: 0.98; font-weight: 300; font-style: italic; }
+h2 { font-size: clamp(2.2rem, 5.5vw, 4rem); line-height: 1.05; }
+h3 { font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.01em; }
+p.lede { color: var(--muted); font-size: clamp(1.05rem, 1.4vw, 1.25rem); max-width: 52ch; margin-top: 1.8rem; line-height: 1.7; }
 
 .btn {
   display: inline-flex;
@@ -87,12 +95,12 @@ p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 
 .btn.primary { background: var(--accent); color: #001014; border-color: transparent; }
 .btn.primary:hover { box-shadow: 0 8px 48px -8px var(--accent); }
 
-/* ========== GAME-CINEMATIC HUD LAYER ========== */
+/* ========== QUIET LUXURY HUD LAYER ========== */
 
 :root {
   --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, monospace;
-  --hud-line: rgba(0, 229, 255, 0.28);
-  --hud-fill: rgba(0, 229, 255, 0.05);
+  --hud-line: rgba(212, 175, 55, 0.22);
+  --hud-fill: rgba(255, 255, 255, 0.02);
 }
 
 /* Film grain + scanlines over everything — the cinematic atmosphere. */
@@ -157,7 +165,7 @@ p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 
   font-weight: 700;
   color: var(--accent);
   line-height: 1;
-  text-shadow: 0 0 24px rgba(0, 229, 255, 0.45);
+  text-shadow: 0 0 24px rgba(212, 175, 55, 0.35);
 }
 .stat span {
   display: block;
@@ -185,7 +193,7 @@ p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 
 }
 .case-card:hover, .case-card:focus-visible {
   border-color: var(--accent);
-  box-shadow: 0 24px 80px -24px rgba(0, 229, 255, 0.5);
+  box-shadow: 0 24px 80px -24px rgba(212, 175, 55, 0.35);
   outline: none;
 }
 .case-chrome {
@@ -232,7 +240,7 @@ p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 
 
 /* Skill-tree service nodes */
 .skill { padding: 1.8rem; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.3s; }
-.skill:hover { transform: translateY(-4px); background: rgba(0, 229, 255, 0.08); }
+.skill:hover { transform: translateY(-4px); background: rgba(212, 175, 55, 0.08); }
 .skill h3 { font-size: 1.15rem; margin-bottom: 0.7rem; display: flex; align-items: center; gap: 0.6rem; }
 .skill h3::before {
   content: '';
@@ -314,7 +322,7 @@ p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, rgba(0, 229, 255, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, transparent 70%);
   opacity: 0;
   transform: scale(0.5);
   transition: opacity 0.4s, transform 0.4s;

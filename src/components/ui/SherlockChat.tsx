@@ -130,10 +130,10 @@ export function SherlockChat() {
         style={{
           position: 'fixed', bottom: 24, right: 24, zIndex: 60,
           padding: '0.9rem 1.4rem', borderRadius: 4, cursor: 'pointer',
-          background: 'rgba(0,229,255,0.1)', border: '1px solid var(--accent)',
+          background: 'rgba(212, 175, 55, 0.08)', border: '1px solid var(--accent)',
           color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '.8rem',
           letterSpacing: '.14em', textTransform: 'uppercase',
-          boxShadow: '0 0 32px rgba(0,229,255,0.25)',
+          boxShadow: '0 0 32px rgba(212, 175, 55, 0.18)',
           transition: 'transform .15s, box-shadow .15s, background .15s',
         }}
       >
@@ -156,12 +156,14 @@ export function SherlockChat() {
     >
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.9rem 1.1rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.72rem', letterSpacing: '.2em', color: 'var(--accent)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '.5rem' }}>
-          <span style={{
-            width: 8, height: 8, borderRadius: '50%',
-            background: speaking ? 'var(--accent)' : '#00e5ff',
-            boxShadow: speaking ? '0 0 12px var(--accent)' : 'none',
-            animation: speaking ? 'pulse-dot 1s ease-in-out infinite' : 'none',
-          }} />
+          <span
+            style={{
+              width: 8, height: 8, borderRadius: '50%',
+              background: speaking ? 'var(--accent)' : '#d4af37',
+              boxShadow: speaking ? '0 0 12px var(--accent)' : 'none',
+              animation: speaking ? 'pulse-dot 1s ease-in-out infinite' : 'none',
+            }}
+          />
           Digital Kundan — {speaking ? 'speaking' : busy ? 'deducing' : 'online'}
         </span>
         <button onClick={() => { setOpen(false); voice.stop(); }} aria-label="Close chat" style={{ background: 'none', border: 0, color: 'var(--muted)', cursor: 'pointer', fontSize: '1rem' }}>✕</button>
@@ -174,7 +176,7 @@ export function SherlockChat() {
             style={{
               justifySelf: m.role === 'user' ? 'end' : 'start',
               maxWidth: '85%', padding: '.65rem .9rem', fontSize: '.88rem', lineHeight: 1.5,
-              background: m.role === 'user' ? 'rgba(0,229,255,0.12)' : 'rgba(255,255,255,0.05)',
+              background: m.role === 'user' ? 'rgba(212, 175, 55, 0.10)' : 'rgba(255,255,255,0.05)',
               border: `1px solid ${m.role === 'user' ? 'var(--hud-line)' : 'rgba(255,255,255,0.08)'}`,
               borderRadius: 4, color: 'var(--fg)',
             }}
@@ -207,7 +209,7 @@ export function SherlockChat() {
             style={{
               padding: '0 .9rem', borderRadius: 4, cursor: 'pointer',
               border: `1px solid ${listening ? 'var(--accent)' : 'rgba(255,255,255,0.14)'}`,
-              background: listening ? 'rgba(0,229,255,0.15)' : 'rgba(255,255,255,0.04)',
+              background: listening ? 'rgba(212, 175, 55, 0.12)' : 'rgba(255,255,255,0.04)',
               color: listening ? 'var(--accent)' : 'var(--muted)',
             }}
           >

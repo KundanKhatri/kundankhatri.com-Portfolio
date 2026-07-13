@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
 import { site } from '@/data/content';
 import { JsonLd } from '@/components/ui/JsonLd';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
+// Luxury serif for the display headlines — the Dribbble reference uses something like this.
+const serif = Cormorant_Garamond({ subsets: ['latin'], weight: ['300', '500', '700'], variable: '--font-serif', display: 'swap' });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.kundankhatri.com'),
@@ -33,7 +35,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${serif.variable}`}>
       <body>
         <JsonLd />
         {children}
