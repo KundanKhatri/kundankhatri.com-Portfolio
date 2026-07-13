@@ -7,3 +7,4 @@ node_modules
 # Raw 3D build-source (630MB Meshy GLBs + zip). Optimized outputs live in
 # public/models — Vercel builds from those, so this never needs to ship.
 assets-src/
+.serena/

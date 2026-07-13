@@ -40,10 +40,10 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <p style={{ marginTop: '4rem', color: 'var(--muted)', fontSize: '.85rem' }}>scroll ↓ — he walks with you</p>
+          <p style={{ marginTop: '4rem', color: 'var(--muted)', fontSize: '.85rem' }}>scroll ↓ — he&apos;s with you the whole way</p>
         </section>
 
-        {/* STORY CHAPTERS — robot walks through these */}
+        {/* STORY CHAPTERS — avatar poses through these */}
         {chapters.map((ch, i) => (
           <Chapter
             key={ch.id}
@@ -112,7 +112,7 @@ export default function Home() {
           </p>
           <LeadForm />
           <p style={{ marginTop: '3.5rem', color: 'var(--muted)', fontSize: '.85rem' }}>
-            {site.name} · {site.email} · 3D robot generated with Meshy AI (CC BY 4.0)
+            {site.name} · {site.email} · 3D avatar generated with Meshy AI (CC BY 4.0)
           </p>
         </section>
       </main>

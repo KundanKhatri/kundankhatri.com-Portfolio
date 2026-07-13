@@ -7,6 +7,7 @@ import { Howl } from 'howler';
 class SoundManager {
   private enabled = true;
   private sounds: Record<string, Howl> = {};
+  private lastHoverAt = 0;
 
   init() {
     if (Object.keys(this.sounds).length) return;
@@ -16,6 +17,9 @@ class SoundManager {
       hover: make('/sounds/hover.wav', 0.2),
       whoosh: make('/sounds/whoosh.wav', 0.3),
       boot: make('/sounds/boot.wav', 0.45),
+      tap: make('/sounds/tap.wav', 0.5),
+      success: make('/sounds/success.wav', 0.4),
+      transition: make('/sounds/transition.wav', 0.3),
     };
   }
 
@@ -25,10 +29,22 @@ class SoundManager {
   }
   get isEnabled() { return this.enabled; }
 
-  play(name: 'click' | 'hover' | 'whoosh' | 'boot') {
+  play(name: 'click' | 'hover' | 'whoosh' | 'boot' | 'tap' | 'success' | 'transition') {
     if (!this.enabled) return;
     if (!Object.keys(this.sounds).length) this.init(); // lazy-init on first gesture
-    this.sounds[name]?.play();
+
+    if (name === 'hover') {
+      const now = performance.now();
+      if (now - this.lastHoverAt < 80) return; // machine-gun guard against rapid pointer moves
+      this.lastHoverAt = now;
+    }
+
+    const howl = this.sounds[name];
+    if (!howl) return;
+    const id = howl.play();
+    // per-play pitch/volume jitter — identical repeats read as flat, this is what makes it feel alive
+    howl.rate(0.94 + Math.random() * 0.14, id);
+    howl.volume((howl.volume() as number) * (0.9 + Math.random() * 0.2), id);
   }
 }
 

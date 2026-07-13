@@ -23,6 +23,7 @@ export function LeadForm() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? 'Something went wrong');
+      sound.play('success');
       setStatus('ok');
     } catch (err) {
       setStatus('error');

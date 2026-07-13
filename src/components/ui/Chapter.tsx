@@ -23,7 +23,7 @@ export function Chapter({ id, era, title, body, link, align = 'left' }: Props) {
       ([e]) => {
         if (e.isIntersecting) {
           setVisible(true);
-          sound.play('whoosh');
+          sound.play('transition');
         }
       },
       { threshold: 0.35 },
