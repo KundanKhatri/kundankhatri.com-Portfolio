@@ -64,7 +64,7 @@ export default function Home() {
           <h2>Hire the outcome, not the hours.</h2>
           <div style={{ display: 'grid', gap: '1.4rem', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', marginTop: '2.4rem' }}>
             {services.map((s) => (
-              <div key={s.title} className="hud skill" onMouseEnter={() => sound.play('hover')}>
+              <div key={s.title} className="hud skill touch-ripple" onMouseEnter={() => sound.play('hover')}>
                 <h3>{s.title}</h3>
                 <p>{s.body}</p>
               </div>
@@ -75,10 +75,10 @@ export default function Home() {
         {/* CREDENTIALS — achievements */}
         <section className="section">
           <p className="hud-label">Achievements unlocked</p>
-          <h2>Proof I show up where it&apos;s hardest.</h2>
+          <h2>Proof I show up where it's hardest.</h2>
           <ul style={{ marginTop: '2rem', listStyle: 'none', display: 'grid', gap: '.8rem' }}>
             {credentials.map((c) => (
-              <li key={c} className="achievement" onMouseEnter={() => sound.play('hover')}>{c}</li>
+              <li key={c} className="achievement touch-ripple" onMouseEnter={() => sound.play('hover')}>{c}</li>
             ))}
           </ul>
         </section>
@@ -89,7 +89,7 @@ export default function Home() {
           <h2>Production stack, end to end.</h2>
           <div style={{ display: 'grid', gap: '1.2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', marginTop: '2rem' }}>
             {Object.entries(stack).map(([k, items]) => (
-              <div key={k}>
+              <div key={k} className="hud skill touch-ripple" style={{ padding: '1.4rem' }}>
                 <h3 style={{ fontSize: '.85rem', textTransform: 'uppercase', letterSpacing: '.15em', color: 'var(--accent)', marginBottom: '.8rem' }}>{k}</h3>
                 {items.map((t) => (
                   <p key={t} style={{ color: 'var(--muted)', fontSize: '.92rem', padding: '.25rem 0' }}>{t}</p>
