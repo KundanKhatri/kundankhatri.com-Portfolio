@@ -33,23 +33,37 @@ export async function POST(req: Request) {
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: 'Bad request' }, { status: 400 });
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'content-type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-    },
-    body: JSON.stringify({
-      model: 'claude-haiku-4-5',
-      max_tokens: 300,
-      system: SYSTEM,
-      messages: parsed.data.messages,
-    }),
-  });
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      signal: controller.signal,
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-3-5-haiku-20241022',
+        max_tokens: 280,
+        system: SYSTEM,
+        messages: parsed.data.messages,
+      }),
+    });
+    clearTimeout(timeout);
 
-  if (!res.ok) return Response.json({ offline: true });
-  const data = (await res.json()) as { content: { type: string; text?: string }[] };
-  const text = data.content.find((b) => b.type === 'text')?.text ?? '';
-  return Response.json({ reply: text });
+    if (!res.ok) {
+      // Don't leak Anthropic error details to the client.
+      console.error('Anthropic chat failed', res.status);
+      return Response.json({ offline: true });
+    }
+    const data = (await res.json()) as { content: { type: string; text?: string }[] };
+    const text = data.content.find((b) => b.type === 'text')?.text ?? '';
+    if (!text.trim()) return Response.json({ offline: true });
+    return Response.json({ reply: text });
+  } catch (err) {
+    console.error('Chat fetch error', err);
+    return Response.json({ offline: true });
+  }
 }
