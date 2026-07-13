@@ -70,6 +70,85 @@ export const chapters = [
   },
 ] as const;
 
+/** Quest-log case studies — every number traces to the chapter copy above. */
+export const caseStudies: Record<
+  string,
+  {
+    quest: { label: 'PROBLEM' | 'APPROACH' | 'BUILT' | 'RESULT'; text: string }[];
+    stats: { value: string; label: string }[];
+    shot?: { src: string; alt: string; url: string; domain: string };
+    chips?: readonly string[];
+  }
+> = {
+  origin: {
+    quest: [
+      { label: 'PROBLEM', text: 'Zero brand, zero audience, first year of college.' },
+      { label: 'BUILT', text: 'Streetwear brand end to end — identity, e-commerce, drops.' },
+      { label: 'RESULT', text: 'Shipped live. Paused deliberately, learned why, returning.' },
+    ],
+    stats: [{ value: '20', label: 'age at launch' }, { value: '0→1', label: 'brand from nothing' }],
+    shot: {
+      src: '/images/projects/focusaddict.webp',
+      alt: 'FocusAddict — spirituality-rooted streetwear brand site',
+      url: 'https://focusaddict.com',
+      domain: 'focusaddict.com',
+    },
+  },
+  operations: {
+    quest: [
+      { label: 'PROBLEM', text: 'Live concerts: bars go dry mid-show, revenue dies in minutes.' },
+      { label: 'APPROACH', text: 'One person owning stock flow across every bar, live.' },
+      { label: 'RESULT', text: 'Zero downtime across major shows and premium weddings.' },
+    ],
+    stats: [
+      { value: '40–50', label: 'people coordinated solo' },
+      { value: '0', label: 'bar downtime mid-show' },
+    ],
+    chips: ['Alan Walker', 'Diljit Dosanjh', 'Linkin Park', 'Hanumankind', 'Prateek Kuhad', 'Seedhe Maut'],
+  },
+  santosh: {
+    quest: [
+      { label: 'PROBLEM', text: '15-year Sowcarpet wholesaler, zero online presence, losing orders.' },
+      { label: 'APPROACH', text: 'Revenue system, not a brochure: quote engine + WhatsApp BoQ + local SEO.' },
+      { label: 'BUILT', text: '2,000+ SKUs, 14 authorised brands, dealer pages, trade calculators.' },
+      { label: 'RESULT', text: '₹4,00,000 organic revenue in the first 10 days — before any paid marketing.' },
+    ],
+    stats: [
+      { value: '₹4L', label: 'revenue in 10 days' },
+      { value: '2,000+', label: 'SKUs live' },
+      { value: '14', label: 'authorised brands' },
+    ],
+    shot: {
+      src: '/images/projects/santosh.webp',
+      alt: 'Santosh Electricals — B2B electrical wholesale platform',
+      url: 'https://santoshelectric.com',
+      domain: 'santoshelectric.com',
+    },
+  },
+  zerotheory: {
+    quest: [
+      { label: 'PROBLEM', text: 'AI products die as demos — no billing, no auth, no hardening.' },
+      { label: 'BUILT', text: 'Production platform: Supabase + pgvector, Razorpay + GST, n8n, AI waterfall.' },
+      { label: 'RESULT', text: 'Incorporated company shipping with security, auth and rate limits.' },
+    ],
+    stats: [
+      { value: 'Pvt Ltd', label: 'incorporated, India' },
+      { value: 'local→cloud', label: 'AI routing waterfall' },
+    ],
+  },
+  security: {
+    quest: [
+      { label: 'PROBLEM', text: 'AI agents will transact money. Almost nobody is securing that.' },
+      { label: 'BUILT', text: 'TripWire — 5-layer security for agent infrastructure (Microsoft hackathon).' },
+      { label: 'RESULT', text: 'Plus Voca and ProofPay — R&D bets on the agentic future.' },
+    ],
+    stats: [
+      { value: '5', label: 'security layers' },
+      { value: '3', label: 'R&D products' },
+    ],
+  },
+};
+
 export const services = [
   {
     title: 'Business websites that sell',

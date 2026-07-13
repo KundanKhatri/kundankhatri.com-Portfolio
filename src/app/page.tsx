@@ -6,6 +6,7 @@ import { useSmoothScroll, bindScrollState } from '@/lib/useScrollProgress';
 import { Chapter } from '@/components/ui/Chapter';
 import { LeadForm } from '@/components/ui/LeadForm';
 import { SoundToggle } from '@/components/ui/SoundToggle';
+import { SherlockChat } from '@/components/ui/SherlockChat';
 import { sound } from '@/lib/sound';
 
 const Experience = dynamic(
@@ -21,10 +22,11 @@ export default function Home() {
     <>
       <Experience />
       <SoundToggle />
-      <main className="content">
+      <SherlockChat />
+      <main className="content grain">
         {/* HERO */}
         <section className="section" style={{ minHeight: '100vh', justifyContent: 'center' }}>
-          <p className="eyebrow">Kundan Khatri · ZeroTheory AI Pvt Ltd</p>
+          <p className="hud-label">Kundan Khatri · ZeroTheory AI Pvt Ltd</p>
           <h1>{hero.headline}</h1>
           <p className="lede">{hero.sub}</p>
           <div style={{ display: 'flex', gap: '1rem', marginTop: '2.2rem', flexWrap: 'wrap' }}>
@@ -43,7 +45,7 @@ export default function Home() {
           <p style={{ marginTop: '4rem', color: 'var(--muted)', fontSize: '.85rem' }}>scroll ↓ — he&apos;s with you the whole way</p>
         </section>
 
-        {/* STORY CHAPTERS — avatar poses through these */}
+        {/* STORY CHAPTERS — quest log; avatar poses through these */}
         {chapters.map((ch, i) => (
           <Chapter
             key={ch.id}
@@ -51,45 +53,39 @@ export default function Home() {
             era={ch.era}
             title={ch.title}
             body={ch.body}
-            link={'link' in ch ? (ch.link as { label: string; href: string }) : undefined}
+            link={ch.id !== 'zerotheory' && 'link' in ch ? (ch.link as { label: string; href: string }) : undefined}
             align={i % 2 === 0 ? 'left' : 'right'}
           />
         ))}
 
-        {/* SERVICES */}
+        {/* SERVICES — skill tree */}
         <section id="work" className="section">
-          <p className="eyebrow">What I do for businesses</p>
+          <p className="hud-label">Skill tree · What I do for businesses</p>
           <h2>Hire the outcome, not the hours.</h2>
           <div style={{ display: 'grid', gap: '1.4rem', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', marginTop: '2.4rem' }}>
             {services.map((s) => (
-              <div
-                key={s.title}
-                onMouseEnter={() => sound.play('hover')}
-                style={{ padding: '1.8rem', borderRadius: 18, border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)' }}
-              >
-                <h3 style={{ fontSize: '1.2rem', marginBottom: '.7rem' }}>{s.title}</h3>
-                <p style={{ color: 'var(--muted)', lineHeight: 1.6, fontSize: '.95rem' }}>{s.body}</p>
+              <div key={s.title} className="hud skill" onMouseEnter={() => sound.play('hover')}>
+                <h3>{s.title}</h3>
+                <p>{s.body}</p>
               </div>
             ))}
           </div>
         </section>
 
-        {/* CREDENTIALS */}
+        {/* CREDENTIALS — achievements */}
         <section className="section">
-          <p className="eyebrow">Programs · Competitions · Recognition</p>
+          <p className="hud-label">Achievements unlocked</p>
           <h2>Proof I show up where it&apos;s hardest.</h2>
           <ul style={{ marginTop: '2rem', listStyle: 'none', display: 'grid', gap: '.8rem' }}>
             {credentials.map((c) => (
-              <li key={c} style={{ padding: '1rem 1.3rem', borderLeft: '2px solid var(--accent)', background: 'rgba(255,255,255,0.02)', color: 'var(--muted)' }}>
-                {c}
-              </li>
+              <li key={c} className="achievement" onMouseEnter={() => sound.play('hover')}>{c}</li>
             ))}
           </ul>
         </section>
 
         {/* STACK */}
         <section className="section">
-          <p className="eyebrow">Tools I ship with</p>
+          <p className="hud-label">Loadout · Tools I ship with</p>
           <h2>Production stack, end to end.</h2>
           <div style={{ display: 'grid', gap: '1.2rem', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', marginTop: '2rem' }}>
             {Object.entries(stack).map(([k, items]) => (
@@ -103,9 +99,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CONTACT */}
+        {/* CONTACT — mission brief */}
         <section id="contact" className="section" style={{ paddingBottom: '8rem' }}>
-          <p className="eyebrow">Tell me your problem</p>
+          <p className="hud-label">Mission brief · Start a contract</p>
           <h2>Your business has a bottleneck.<br />I build the system that removes it.</h2>
           <p className="lede" style={{ marginBottom: '2.4rem' }}>
             Describe the problem in your own words — no tech language needed. I reply personally within 24 hours.

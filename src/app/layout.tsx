@@ -7,21 +7,22 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://kundankhatri.com'),
+  metadataBase: new URL('https://www.kundankhatri.com'),
   title: {
     default: 'Kundan Khatri — AI Agent & Website Developer, India',
     template: '%s · Kundan Khatri',
   },
   description: site.description,
-  alternates: { canonical: 'https://kundankhatri.com/' },
+  alternates: { canonical: 'https://www.kundankhatri.com/' },
   keywords: [
     'Kundan Khatri', 'ZeroTheory AI', 'business website developer India',
-    'AI agents developer', 'production AI platform', 'web developer Chennai Bangalore',
+    'AI agents developer India', 'AI automation agency India', 'hire AI engineer India',
+    'production AI platform', 'revenue systems', 'web developer Bengaluru Chennai',
   ],
   openGraph: {
     title: site.title,
     description: site.description,
-    url: 'https://kundankhatri.com',
+    url: 'https://www.kundankhatri.com',
     siteName: 'Kundan Khatri',
     type: 'website',
     locale: 'en_IN',
