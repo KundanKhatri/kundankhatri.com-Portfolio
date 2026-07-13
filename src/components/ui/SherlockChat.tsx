@@ -124,7 +124,9 @@ export function SherlockChat() {
       <button
         onClick={openChat}
         onMouseEnter={() => sound.play('hover')}
+        onPointerDown={() => sound.play('tap')}
         aria-label="Talk to Digital Kundan"
+        className="touch-ripple"
         style={{
           position: 'fixed', bottom: 24, right: 24, zIndex: 60,
           padding: '0.9rem 1.4rem', borderRadius: 4, cursor: 'pointer',
@@ -132,6 +134,7 @@ export function SherlockChat() {
           color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '.8rem',
           letterSpacing: '.14em', textTransform: 'uppercase',
           boxShadow: '0 0 32px rgba(0,229,255,0.25)',
+          transition: 'transform .15s, box-shadow .15s, background .15s',
         }}
       >
         ▸ Talk to Digital Kundan
