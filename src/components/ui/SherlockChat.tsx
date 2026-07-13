@@ -40,8 +40,16 @@ export function SherlockChat() {
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);
   const [listening, setListening] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const logRef = useRef<HTMLDivElement>(null);
   const recRef = useRef<SpeechRecognitionLike | null>(null);
+
+  // Track TTS state so the UI can show when Digital Kundan is literally talking.
+  useEffect(() => {
+    const onSpeak = (e: Event) => setSpeaking((e as CustomEvent<boolean>).detail);
+    window.addEventListener('kk-speaking', onSpeak);
+    return () => window.removeEventListener('kk-speaking', onSpeak);
+  }, []);
 
   useEffect(() => {
     logRef.current?.scrollTo({ top: logRef.current.scrollHeight, behavior: 'smooth' });
@@ -144,8 +152,14 @@ export function SherlockChat() {
       }}
     >
       <header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.9rem 1.1rem', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.72rem', letterSpacing: '.2em', color: 'var(--accent)', textTransform: 'uppercase' }}>
-          ● Digital Kundan — online
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: '.72rem', letterSpacing: '.2em', color: 'var(--accent)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '.5rem' }}>
+          <span style={{
+            width: 8, height: 8, borderRadius: '50%',
+            background: speaking ? 'var(--accent)' : '#00e5ff',
+            boxShadow: speaking ? '0 0 12px var(--accent)' : 'none',
+            animation: speaking ? 'pulse-dot 1s ease-in-out infinite' : 'none',
+          }} />
+          Digital Kundan — {speaking ? 'speaking' : busy ? 'deducing' : 'online'}
         </span>
         <button onClick={() => { setOpen(false); voice.stop(); }} aria-label="Close chat" style={{ background: 'none', border: 0, color: 'var(--muted)', cursor: 'pointer', fontSize: '1rem' }}>✕</button>
       </header>

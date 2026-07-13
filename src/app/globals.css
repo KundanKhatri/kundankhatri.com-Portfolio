@@ -298,3 +298,48 @@ p.lede { color: var(--muted); font-size: clamp(1rem, 1.6vw, 1.3rem); max-width: 
   .marquee-track { animation: none; }
   .case-card { transform: none !important; }
 }
+
+/* Chat status dot pulse */
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.7; }
+}
+
+/* Mobile touch ripple for interactive elements */
+.touch-ripple {
+  position: relative;
+  overflow: hidden;
+}
+.touch-ripple::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.35) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.4s, transform 0.4s;
+  pointer-events: none;
+}
+.touch-ripple:active::after {
+  opacity: 1;
+  transform: scale(1.2);
+  transition: opacity 0.1s, transform 0.1s;
+}
+
+/* Focus-visible halo for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Smooth section transition sweep line */
+.section h2::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  margin-top: 0.6rem;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transition: width 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.section h2.in-view::after { width: 120px; }

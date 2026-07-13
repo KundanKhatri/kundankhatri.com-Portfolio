@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
@@ -26,6 +26,13 @@ const DRIFT_X_FACTOR = 0.22; // matches Robot.tsx's S-curve drift width
 const CLICK_PULSE_AMOUNT = 0.06;
 const CLICK_PULSE_DURATION = 0.5; // seconds
 
+// Speech-driven life: the avatar becomes more alert while Digital Kundan talks.
+const SPEAK_EMPHASIS_SPEED = 8; // rad/s
+const SPEAK_EMPHASIS_AMOUNT = 0.018; // fraction of TARGET_HEIGHT
+const SPEAK_NOD_SPEED = 5.5; // rad/s
+const SPEAK_NOD_AMOUNT = 0.035; // rad
+const SPEAK_LOOK_INTENSITY = 1.6; // cursor influence multiplier while speaking
+
 type Pose = { xNorm: number; y: number; z: number; rotationY: number; scale: number };
 
 /** One pose per scroll section — index mirrors Robot.tsx's SECTION_CLIP
@@ -42,10 +49,21 @@ const SECTION_POSES: Pose[] = [
 
 export function Avatar() {
   const group = useRef<THREE.Group>(null);
+  const ringRef = useRef<THREE.Mesh>(null);
   const { scene } = useGLTF(BASE);
   const scaleState = useRef({ base: 1 });
   const pulseElapsed = useRef<number | null>(null);
+  const [speaking, setSpeaking] = useState(false);
   const { viewport, pointer } = useThree();
+
+  // Listen to the TTS state broadcast by voice.ts so the avatar can animate while talking.
+  useEffect(() => {
+    const onSpeak = (e: Event) => {
+      setSpeaking((e as CustomEvent<boolean>).detail);
+    };
+    window.addEventListener('kk-speaking', onSpeak);
+    return () => window.removeEventListener('kk-speaking', onSpeak);
+  }, []);
 
   // Normalize the static mesh once: center it, sit it on the ground plane, scale to TARGET_HEIGHT.
   useEffect(() => {
@@ -81,14 +99,21 @@ export function Avatar() {
     const t = state.clock.elapsedTime;
 
     // Idle life: gentle bob + very slow sway, layered under the chapter pose.
-    const bob = Math.sin(t * IDLE_BOB_SPEED) * TARGET_HEIGHT * IDLE_BOB_AMOUNT;
-    const sway = Math.sin(t * IDLE_SWAY_SPEED) * IDLE_SWAY_AMOUNT;
+    let bob = Math.sin(t * IDLE_BOB_SPEED) * TARGET_HEIGHT * IDLE_BOB_AMOUNT;
+    let sway = Math.sin(t * IDLE_SWAY_SPEED) * IDLE_SWAY_AMOUNT;
+
+    // When speaking: sharper emphasis bob + affirmative nods + intensified cursor tracking.
+    if (speaking) {
+      bob += Math.sin(t * SPEAK_EMPHASIS_SPEED) * TARGET_HEIGHT * SPEAK_EMPHASIS_AMOUNT;
+      sway += Math.sin(t * SPEAK_NOD_SPEED) * SPEAK_NOD_AMOUNT;
+    }
 
     const targetX = pose.xNorm * viewport.width * DRIFT_X_FACTOR;
     damp3(g.position, [targetX, pose.y + bob, pose.z], 0.6, delta);
 
-    const cursorYaw = THREE.MathUtils.clamp(pointer.x * CURSOR_YAW_CLAMP, -CURSOR_YAW_CLAMP, CURSOR_YAW_CLAMP);
-    const cursorTilt = THREE.MathUtils.clamp(-pointer.y * CURSOR_TILT_CLAMP, -CURSOR_TILT_CLAMP, CURSOR_TILT_CLAMP);
+    const lookIntensity = speaking ? SPEAK_LOOK_INTENSITY : 1;
+    const cursorYaw = THREE.MathUtils.clamp(pointer.x * CURSOR_YAW_CLAMP * lookIntensity, -CURSOR_YAW_CLAMP, CURSOR_YAW_CLAMP);
+    const cursorTilt = THREE.MathUtils.clamp(-pointer.y * CURSOR_TILT_CLAMP * lookIntensity, -CURSOR_TILT_CLAMP, CURSOR_TILT_CLAMP);
     dampAngle(g.rotation, 'y', pose.rotationY + sway + cursorYaw, 0.5, delta);
     dampAngle(g.rotation, 'x', cursorTilt, 0.5, delta);
 
@@ -105,6 +130,15 @@ export function Avatar() {
       }
     }
     g.scale.setScalar(scaleState.current.base * (1 + pulse));
+
+    // Holographic speech ring: pulses outward from the avatar's feet while TTS is active.
+    const ring = ringRef.current;
+    if (ring) {
+      const ringScale = speaking ? 1 + Math.sin(t * 6) * 0.08 : 1;
+      ring.scale.setScalar(ringScale);
+      (ring.material as THREE.MeshBasicMaterial).opacity = speaking ? 0.35 + Math.sin(t * 8) * 0.15 : 0;
+      ring.rotation.z = t * 0.3;
+    }
   });
 
   const handleClick = () => {
@@ -120,6 +154,11 @@ export function Avatar() {
       onPointerOut={() => { document.body.style.cursor = 'auto'; }}
     >
       <primitive object={scene} />
+      {/* Holographic speech ring — only visible while Digital Kundan is talking. */}
+      <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
+        <ringGeometry args={[0.55, 0.6, 64]} />
+        <meshBasicMaterial color="#00e5ff" transparent opacity={0} side={THREE.DoubleSide} />
+      </mesh>
     </group>
   );
 }

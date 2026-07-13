@@ -34,7 +34,7 @@ export default function Home() {
               <a
                 key={c.label}
                 href={c.target}
-                className={`btn ${c.kind === 'client' ? 'primary' : ''}`}
+                className={`btn touch-ripple ${c.kind === 'client' ? 'primary' : ''}`}
                 onMouseEnter={() => sound.play('hover')}
                 onClick={() => sound.play('click')}
               >

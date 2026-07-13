@@ -24,9 +24,13 @@ class Voice {
     if (this.preferred) u.voice = this.preferred;
     u.rate = 1.04;
     u.pitch = 0.92;
-    u.onstart = () => onState?.(true);
-    u.onend = () => onState?.(false);
-    u.onerror = () => onState?.(false);
+    const setSpeaking = (speaking: boolean) => {
+      onState?.(speaking);
+      window.dispatchEvent(new CustomEvent('kk-speaking', { detail: speaking }));
+    };
+    u.onstart = () => setSpeaking(true);
+    u.onend = () => setSpeaking(false);
+    u.onerror = () => setSpeaking(false);
     speechSynthesis.speak(u);
   }
 

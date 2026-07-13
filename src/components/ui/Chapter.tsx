@@ -23,11 +23,13 @@ export function Chapter({ id, era, title, body, link, align = 'left' }: Props) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const h2 = el.querySelector('h2');
     const io = new IntersectionObserver(
       ([e]) => {
         if (e.isIntersecting) {
           setVisible(true);
           sound.play('transition');
+          h2?.classList.add('in-view');
         }
       },
       { threshold: 0.35 },
