@@ -1,7 +1,7 @@
 'use client';
 import { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { ContactShadows, Environment, Float, Lightformer } from '@react-three/drei';
+import { ContactShadows, Environment, Float } from '@react-three/drei';
 import { Avatar } from './Avatar';
 import { Robot } from './Robot';
 import { useQuality } from '@/lib/useQuality';
@@ -47,14 +47,10 @@ export function Experience() {
           <Float speed={1.0} rotationIntensity={0.04} floatIntensity={0.2}>
             {CHARACTER === 'avatar' ? <Avatar /> : <Robot />}
           </Float>
-          {/* Procedural IBL — warm-neutral lightformers for premium reflections. */}
-          {high && (
-            <Environment resolution={256} frames={1}>
-              <Lightformer intensity={2.2} position={[0, 2, 4]} scale={[8, 2, 1]} color="#fff8e7" />
-              <Lightformer intensity={1.4} position={[-4, 1, 2]} scale={[4, 4, 1]} color="#d4af37" />
-              <Lightformer intensity={1.0} position={[4, -1, -2]} scale={[4, 4, 1]} color="#f2e6c2" />
-            </Environment>
-          )}
+          {/* Real luxury-studio HDRI for premium IBL + reflections on the model.
+              Background stays dark (no `background` prop) so the light editorial
+              text remains readable. Full visible white-office = a light-theme flip. */}
+          {high && <Environment files="/hdri/office.hdr" environmentIntensity={IS_AVATAR ? 1.0 : 0.7} />}
         </Suspense>
         {high && (
           <ContactShadows position={[0, -1.05, 0]} opacity={0.55} scale={8} blur={2.6} far={3} />
