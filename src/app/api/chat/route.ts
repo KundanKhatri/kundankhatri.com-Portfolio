@@ -26,9 +26,25 @@ Rules:
 - Off-topic requests (code help, homework, anything not about hiring Kundan): one witty deflection, then back to their business.
 - Never break character, never mention being an API or model.`;
 
+// ponytail: mirrors the lead route's per-isolate IP limiter — a speed bump
+// against Anthropic bill-runup, not a fortress. Move to Vercel KV/Upstash if an
+// attacker spreads across edge isolates.
+const hits = new Map<string, { n: number; t: number }>();
+function rateLimited(ip: string) {
+  const now = Date.now();
+  const r = hits.get(ip);
+  if (!r || now - r.t > 300_000) { hits.set(ip, { n: 1, t: now }); return false; }
+  return ++r.n > 20; // 20 messages / 5 min per IP
+}
+function clientIp(req: Request) {
+  const parts = req.headers.get('x-forwarded-for')?.split(',').map((p) => p.trim()).filter(Boolean);
+  return parts?.[parts.length - 1] ?? 'unknown';
+}
+
 export async function POST(req: Request) {
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return Response.json({ offline: true });
+  if (rateLimited(clientIp(req))) return Response.json({ error: 'One moment — too many messages.' }, { status: 429 });
 
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: 'Bad request' }, { status: 400 });
