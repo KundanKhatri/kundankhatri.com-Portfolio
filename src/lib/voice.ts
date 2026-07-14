@@ -8,10 +8,14 @@ class Voice {
   private pick() {
     if (this.preferred || typeof speechSynthesis === 'undefined') return;
     const voices = speechSynthesis.getVoices();
+    const byName = (n: string) => voices.find((v) => v.name === n);
+    // Prefer neural/network voices — far less robotic than default local ones.
     this.preferred =
-      voices.find((v) => v.name === 'Daniel') ??
-      voices.find((v) => v.lang === 'en-GB' && v.localService) ??
-      voices.find((v) => v.lang === 'en-GB') ??
+      byName('Google UK English Male') ??
+      byName('Arthur') ??               // macOS neural
+      byName('Daniel (Enhanced)') ??
+      voices.find((v) => v.lang === 'en-GB' && !v.localService) ?? // network > local
+      byName('Daniel') ??
       voices.find((v) => v.lang.startsWith('en')) ??
       null;
   }

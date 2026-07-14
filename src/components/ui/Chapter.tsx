@@ -28,8 +28,7 @@ export function Chapter({ id, era, title, body, link, align = 'left' }: Props) {
       ([e]) => {
         if (e.isIntersecting) {
           setVisible(true);
-          sound.play('transition');
-          h2?.classList.add('in-view');
+          h2?.classList.add('in-view'); // ponytail: no sound on scroll — it read as noise
         }
       },
       { threshold: 0.35 },
